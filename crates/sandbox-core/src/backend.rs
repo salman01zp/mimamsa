@@ -36,8 +36,7 @@ pub trait SandboxBackend: Send + Sync {
     ) -> Result<SandboxId, SandboxError>;
 
     async fn pause(&self, id: &SandboxId, cancel: CancellationToken) -> Result<(), SandboxError>;
-    async fn resume(&self, id: &SandboxId, cancel: CancellationToken)
-    -> Result<(), SandboxError>;
+    async fn resume(&self, id: &SandboxId, cancel: CancellationToken) -> Result<(), SandboxError>;
     async fn stop(&self, id: &SandboxId, cancel: CancellationToken) -> Result<(), SandboxError>;
     async fn destroy(&self, id: &SandboxId) -> SandboxDestroyed;
 

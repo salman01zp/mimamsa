@@ -1,7 +1,6 @@
-use thiserror::Error;
 use crate::{SandboxId, SandboxState};
 use std::time::Duration;
-
+use thiserror::Error;
 
 // ---------------------------------------------------------------------------
 // Errors
