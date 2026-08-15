@@ -1,0 +1,21 @@
+[workspace]
+members = [
+    "crates/sandbox-core",
+    "crates/sandbox-local"
+] 
+resolver="3"
+
+[workspace.package]
+name = "mimamsa"
+version = "0.1.0"
+edition = "2024"
+
+[workspace.lints.clippy]
+dbg_macro = "warn"
+todo = "warn"
+unimplemented = "warn"
+
+
+
+[workspace.dependencies]
+
