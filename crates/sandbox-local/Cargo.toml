@@ -4,6 +4,15 @@ version = "0.1.0"
 edition.workspace = true
 
 [dependencies]
+sandbox-core = { path = "../sandbox-core" }
+async-trait = "0.1"
+bytes = "1"
+futures = "0.3"
+tokio = { version = "1", features = ["sync", "time"] }
+tokio-util = "0.7"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 
 [lints]
 workspace = true
