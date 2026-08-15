@@ -1,9 +1,8 @@
 mod backend;
-mod handle;
+mod error;
 mod types;
 
 pub use backend::SandboxBackend;
-pub use handle::SandboxHandle;
 pub use types::{
     DiscoveredSandbox, ImageRef, PauseFidelity, SandboxBackendCapabilities, SandboxBackendHealth,
     SandboxBackendId, SandboxDestroyed, SandboxEnv, SandboxError, SandboxFailure, SandboxId,

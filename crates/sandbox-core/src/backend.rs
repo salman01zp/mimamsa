@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use async_trait::async_trait;
 use futures::stream::BoxStream;
 use tokio_util::sync::CancellationToken;
@@ -7,6 +9,12 @@ use crate::types::{
     SandboxDestroyed, SandboxError, SandboxId, SandboxIo, SandboxSpec, SandboxStatus,
     SandboxStatusEvent, SandboxUsage,
 };
+
+pub struct SandboxHandle {
+    #[allow(dead_code)]
+    backend: Arc<dyn SandboxBackend>,
+    id: SandboxId,
+}
 
 /// Object-safe, deliberately: no associated types, no generic methods, `watch` returns
 /// `BoxStream` rather than `impl Stream`. This is what makes `Arc<dyn SandboxBackend>`
