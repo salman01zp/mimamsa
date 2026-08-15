@@ -1,8 +1,7 @@
 [workspace]
 members = [
-    "crates/sandbox-core",
-    "crates/sandbox-local"
-] 
+    "crates/sandbox-core"
+]
 resolver="3"
 
 [workspace.package]
