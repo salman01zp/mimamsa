@@ -1025,6 +1025,7 @@ checksum = "0283386ce02abc0151e1761d08802dfe86c173b0b494af5cbc086574e453da06"
 dependencies = [
  "log",
  "once_cell",
+ "ring",
  "rustls-pki-types",
  "rustls-webpki",
  "subtle",
@@ -1135,6 +1136,7 @@ name = "sandbox-e2e-test"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "rustls",
  "sandbox-agent-k8s",
  "sandbox-core",
  "tokio",

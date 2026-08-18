@@ -9,3 +9,4 @@ sandbox-agent-k8s = { path = "../sandbox-agent-k8s" }
 clap = { workspace = true }
 tokio = { workspace = true }
 tokio-util = { workspace = true }
+rustls = { version = "0.23", default-features = false, features = ["ring"] }
