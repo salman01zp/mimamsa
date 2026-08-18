@@ -1,0 +1,11 @@
+[package]
+name = "sandbox-e2e-test"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
+sandbox-core = { path = "../sandbox-core" }
+sandbox-agent-k8s = { path = "../sandbox-agent-k8s" }
+clap = { workspace = true }
+tokio = { workspace = true }
+tokio-util = { workspace = true }
