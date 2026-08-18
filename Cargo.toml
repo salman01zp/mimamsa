@@ -1,7 +1,7 @@
 [workspace]
-members = [
+members = ["crates/sandbox-agent-k8s",
     "crates/sandbox-core",
-    "crates/sandbox-local"
+
 ]
 resolver="3"
 

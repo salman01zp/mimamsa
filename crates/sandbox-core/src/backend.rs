@@ -1,56 +1,33 @@
-use std::sync::Arc;
 
 use async_trait::async_trait;
-use futures::stream::BoxStream;
+
 use tokio_util::sync::CancellationToken;
 
-use crate::types::{
-    DiscoveredSandbox, SandboxBackendCapabilities, SandboxBackendHealth, SandboxBackendId,
-    SandboxDestroyed, SandboxError, SandboxId, SandboxIo, SandboxSpec, SandboxStatus,
-    SandboxStatusEvent, SandboxUsage,
-};
+use crate::{error::SandboxError, types::{
+    SandboxId, SandboxSpec, SandboxState
+}};
 
-pub struct SandboxHandle {
-    #[allow(dead_code)]
-    backend: Arc<dyn SandboxBackend>,
-    id: SandboxId,
-}
 
-/// Object-safe, deliberately: no associated types, no generic methods, `watch` returns
-/// `BoxStream` rather than `impl Stream`. This is what makes `Arc<dyn SandboxBackend>`
-/// and a heterogeneous registry possible. ID-keyed, deliberately: mirrors how
-/// Kubernetes and every container API actually work — a name and a client, no
-/// client-side sandbox object.
-///
-/// Backends are stateless about ownership. That discipline (once-only I/O, consuming
-/// `destroy`) lives only in `SandboxHandle`, not here.
+
 #[async_trait]
 pub trait SandboxBackend: Send + Sync {
-    fn id(&self) -> SandboxBackendId;
-    fn capabilities(&self) -> SandboxBackendCapabilities;
-
+    
     async fn create(
         &self,
         spec: SandboxSpec,
         cancel: CancellationToken,
     ) -> Result<SandboxId, SandboxError>;
 
-    async fn pause(&self, id: &SandboxId, cancel: CancellationToken) -> Result<(), SandboxError>;
-    async fn resume(&self, id: &SandboxId, cancel: CancellationToken) -> Result<(), SandboxError>;
+
     async fn stop(&self, id: &SandboxId, cancel: CancellationToken) -> Result<(), SandboxError>;
-    async fn destroy(&self, id: &SandboxId) -> SandboxDestroyed;
+    
+    async fn destroy(&self, id: &SandboxId) -> Result<(), SandboxError>;
 
-    async fn open_io(&self, id: &SandboxId) -> Result<SandboxIo, SandboxError>;
-    async fn status(&self, id: &SandboxId) -> Result<SandboxStatus, SandboxError>;
-    async fn usage(&self, id: &SandboxId) -> Result<SandboxUsage, SandboxError>;
+    async fn status(&self, id: &SandboxId) -> Result<SandboxState, SandboxError>;
 
-    fn watch(&self, id: &SandboxId, since_seq: u64) -> BoxStream<'static, SandboxStatusEvent>;
+    /// List all sandboxes this backend currently knows about.
+    async fn list(&self) -> Result<Vec<SandboxId>, SandboxError>;
 
-    /// Everything observable, whether or not the manager knows about it.
-    async fn discover(&self) -> Result<Vec<DiscoveredSandbox>, SandboxError>;
-
-    /// Admission control.
-    async fn health(&self) -> SandboxBackendHealth;
 }
 
 /// `SandboxBackend` must stay object-safe: `Arc<dyn SandboxBackend>` and the backend
