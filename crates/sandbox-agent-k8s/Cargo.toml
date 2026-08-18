@@ -1,9 +1,8 @@
 [package]
-name.workspace = true
-version.workspace = true
+name = "sandbox-agent-k8s"
+version = "0.1.0"
 edition.workspace = true
 
 [dependencies]
 
-[lints]
-workspace = true
+
