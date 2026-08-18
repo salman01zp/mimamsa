@@ -6,6 +6,7 @@ use bytes::Bytes;
 
 
 
+/// Opaque identifier for a sandbox instance, assigned by the backend on creation.
 #[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct SandboxId(String);
 
@@ -27,6 +28,7 @@ impl fmt::Display for SandboxId {
 
 
 
+/// Lifecycle state of a sandbox, as reported by the backend.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SandboxState {
     Creating,
@@ -43,6 +45,8 @@ pub enum SandboxState {
 // Spec
 // ---------------------------------------------------------------------------
 
+/// Full specification for creating a sandbox: image, resources, environment,
+/// storage, and deadline.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SandboxSpec {
     pub image: ImageRef,
@@ -54,6 +58,7 @@ pub struct SandboxSpec {
 }
 
 
+/// Resource limits applied to a sandbox (memory, CPU, disk, process count).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SandboxResources {
     pub memory_mb: u32,
@@ -63,12 +68,14 @@ pub struct SandboxResources {
 }
 
 
+/// Reference to the container image to run, either pinned by digest or by tag.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ImageRef {
     Digest(SandboxImageDigest),
     Tag(String),
 }
 
+/// Content-addressed image digest, e.g. a `sha256:...` string.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct SandboxImageDigest(String);
 
@@ -83,12 +90,15 @@ impl SandboxImageDigest {
 }
 
 
+/// Environment for a sandbox: plain variables plus references to secrets
+/// resolved by the backend.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SandboxEnv {
     pub vars: BTreeMap<String, String>,
     pub secrets: BTreeMap<String, SecretRef>,
 }
 
+/// Reference to secret material (name and key) that the backend resolves at runtime.
 #[derive(Clone, PartialEq, Eq)]
 pub struct SecretRef {
     pub name: String,
@@ -101,6 +111,8 @@ impl fmt::Debug for SecretRef {
     }
 }
 
+/// Storage configuration for a sandbox: workspace size, seed files, and an
+/// optional persistent state volume.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SandboxStorage {
     pub workspace_mb: u32,
@@ -108,12 +120,14 @@ pub struct SandboxStorage {
     pub state_volume: Option<StateVolumeSpec>,
 }
 
+/// A file to be written into the sandbox workspace before it starts.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SeedFile {
     pub path: String,
     pub contents: Bytes,
 }
 
+/// Specification for an optional persistent state volume attached to the sandbox.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct StateVolumeSpec {
     pub size_mb: u32,

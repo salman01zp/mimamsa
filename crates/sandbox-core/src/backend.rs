@@ -9,6 +9,7 @@ use crate::{error::SandboxError, types::{
 
 
 
+/// Backend capable of creating, controlling, and querying sandboxes.
 #[async_trait]
 pub trait SandboxBackend: Send + Sync {
     
