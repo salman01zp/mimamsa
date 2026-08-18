@@ -20,3 +20,8 @@ bytes = "1.12.1"
 futures = "0.3.34"
 thiserror = "2.0.20"
 tokio-util = "0.7.19"
+kube = { version = "4.2.0", default-features = false, features = ["client", "rustls-tls"] }
+k8s-openapi = { version = "0.28.0", features = ["latest"] }
+tokio = { version = "1.53.1", features = ["rt-multi-thread", "macros", "time"] }
+serde_json = "1.0.151"
+uuid = { version = "1.24.1", features = ["v4"] }
