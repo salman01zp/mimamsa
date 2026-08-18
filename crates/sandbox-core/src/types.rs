@@ -62,8 +62,7 @@ pub struct SandboxResources {
     pub max_pids: u32,
 }
 
-/// Content-addressed, never a path. Digest over tag for the same reason you pin
-/// dependencies: "which image ran this agent" must be answerable afterward.
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ImageRef {
     Digest(SandboxImageDigest),
@@ -90,8 +89,6 @@ pub struct SandboxEnv {
     pub secrets: BTreeMap<String, SecretRef>,
 }
 
-/// A reference to secret material, not the material itself — the backend resolves it
-/// (a K8s Secret name/key, for instance).
 #[derive(Clone, PartialEq, Eq)]
 pub struct SecretRef {
     pub name: String,

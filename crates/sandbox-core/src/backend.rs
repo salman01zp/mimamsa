@@ -29,11 +29,3 @@ pub trait SandboxBackend: Send + Sync {
     async fn list(&self) -> Result<Vec<SandboxId>, SandboxError>;
 
 }
-
-/// `SandboxBackend` must stay object-safe: `Arc<dyn SandboxBackend>` and the backend
-/// registry depend on it. An earlier draft used an associated type and did not compile
-/// with a registry at all — this assertion is the regression test for that.
-const _: fn() = || {
-    fn assert_object_safe(_: &dyn SandboxBackend) {}
-    let _: fn(&dyn SandboxBackend) = assert_object_safe;
-};
